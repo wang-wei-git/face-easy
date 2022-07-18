@@ -35,11 +35,17 @@ public class FaceResult {
      */
     private Float score;
 
+    /*成功*/
     public static final Integer SUCCESS_CODE = 200;
+    /*相似匹配度*/
     public static final Integer SATISFY_SCORE = 80;
+    /*调用腾讯云接口发生的异常*/
     public static final Integer FACE_ERROR = -1;
+    /*数据库没有该人脸*/
     public static final Integer NOT_FOUND_FACE = -2;
+    /*人脸数据为空*/
     public static final Integer NULL_ERROR = -3;
+    /*当前人脸被禁用*/
     public static final Integer FORBIDDEN_FACE = -4;
 
 
