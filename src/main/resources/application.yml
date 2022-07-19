@@ -3,9 +3,9 @@ server:
 
 tencentcloudapi:
   # 你的 secretId
-  secretId: 你腾讯云的secretId
+  secretId: AKIDmNjpeDVfYAUXKr66qLZWCbiZ8QSCfsoT
   # 你的 secretKey
-  secretKey: 你腾讯云的secretKey
+  secretKey: PXP0JL6eRzIJ3XrvjJbcMp2zf4D6i37t
   # 请求官方地址 不变
   endpoint: iai.tencentcloudapi.com
   #地域 可不变

@@ -1,6 +1,7 @@
 package com.face.controller;
 
 import com.face.annotation.FaceLog;
+import com.face.bean.Face;
 import com.face.bean.result.FaceResult;
 import com.face.service.FaceService;
 import io.swagger.annotations.Api;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,9 +34,5 @@ public class FaceController {
         return faceService.vef(imageBase);
     }
 
-    @GetMapping("/test")
-    public String faceVeftest(){
-        return "tse";
-    }
 
 }

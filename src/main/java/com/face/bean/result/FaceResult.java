@@ -47,7 +47,8 @@ public class FaceResult {
     public static final Integer NULL_ERROR = -3;
     /*当前人脸被禁用*/
     public static final Integer FORBIDDEN_FACE = -4;
-
+    /*初始化人脸*/
+    public static final Integer INIT_FACE = 201;
 
     public FaceResult setCode(int code) {
         this.code = code;

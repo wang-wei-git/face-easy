@@ -13,6 +13,7 @@ import com.face.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,43 +34,66 @@ public class FaceServiceImpl extends ServiceImpl<FaceMapper, Face>
     public FaceResult vef(String imageBase) {
         imageBase = JSONUtil.parseObj(imageBase).getStr("imageBase");
         List<Face> faceList = lambdaQuery().orderByDesc(Face::getVefNum).list();
-        int faceLength = faceList.size();
-        for (Face face : faceList) {
-            FaceResult faceResult = faceContrastServer.faceContrast(face.getFaceBase(), imageBase);
-            if (faceResult.getCode() == FaceResult.SUCCESS_CODE ){
-                if (faceResult.getScore() > FaceResult.SATISFY_SCORE){
-                    if (face.getFaceStatus() == 0){
-                        // 成功
-                        lambdaUpdate().set(Face::getVefNum,face.getVefNum()+1).eq(Face::getFid,face.getFid()).update();
-                        faceResult.setMsg(TimeUtils.timeQuantum()+"好,"+face.getFaceName());
-                        faceResult.setName(face.getFaceName());
-                        Map<String,String> map = new HashMap<>();
-                        map.put("score",String.valueOf(faceResult.getScore()));
-                        map.put("faceName",faceResult.getName());
-                        faceResult.setToken(JwtUtils.genereteToken(map));
-                        return faceResult;
+        // 如果人脸库为空,则第一次登录为录入人脸
+        if (faceList.size() == 0){
+            return initFace(imageBase);
+        }else {
+            int faceLength = faceList.size();
+            for (Face face : faceList) {
+                FaceResult faceResult = faceContrastServer.faceContrast(face.getFaceBase(), imageBase);
+                if (faceResult.getCode() == FaceResult.SUCCESS_CODE ){
+                    if (faceResult.getScore() > FaceResult.SATISFY_SCORE){
+                        if (face.getFaceStatus() == 0){
+                            // 成功
+                            lambdaUpdate().set(Face::getVefNum,face.getVefNum()+1).eq(Face::getFid,face.getFid()).update();
+                            faceResult.setMsg(TimeUtils.timeQuantum()+"好,"+face.getFaceName());
+                            faceResult.setName(face.getFaceName());
+                            Map<String,String> map = new HashMap<>();
+                            map.put("score",String.valueOf(faceResult.getScore()));
+                            map.put("faceName",faceResult.getName());
+                            faceResult.setToken(JwtUtils.genereteToken(map));
+                            return faceResult;
+                        }else {
+                            // 失败 人脸被禁用
+                            lambdaUpdate().set(Face::getVefNum,face.getVefNum()+1).eq(Face::getFid,face.getFid()).update();
+                            faceResult.setMsg(face.getFaceName()+",当前人脸被禁用");
+                            faceResult.setName(face.getFaceName());
+                            faceResult.setCode(FaceResult.FORBIDDEN_FACE);
+                            return faceResult;
+                        }
                     }else {
-                        // 失败 人脸被禁用
-                        lambdaUpdate().set(Face::getVefNum,face.getVefNum()+1).eq(Face::getFid,face.getFid()).update();
-                        faceResult.setMsg(face.getFaceName()+",当前人脸被禁用");
-                        faceResult.setName(face.getFaceName());
-                        faceResult.setCode(FaceResult.FORBIDDEN_FACE);
-                        return faceResult;
+                        if (faceLength == 1){
+                            // 人脸库没有检测到人脸
+                            return FaceResult.error(FaceResult.NOT_FOUND_FACE,"人脸库不存在该人脸",faceResult.getScore());
+                        }
+                        faceLength --;
                     }
                 }else {
-                    if (faceLength == 1){
-                        // 人脸库没有检测到人脸
-                        return FaceResult.error(FaceResult.NOT_FOUND_FACE,"人脸库不存在该人脸",faceResult.getScore());
-                    }
-                    faceLength --;
+                    // 接口返回异常
+                    return faceResult;
                 }
-            }else {
-                // 接口返回异常
-                return faceResult;
             }
         }
+
+
         // 空异常
         return FaceResult.error(FaceResult.NULL_ERROR,"空指针异常");
+    }
+
+
+    public FaceResult initFace(String imageBase){
+        FaceResult faceResult = new FaceResult();
+        Face face = new Face();
+        face.setFaceBase(imageBase);
+        face.setCreateTime(new Date());
+        face.setVefNum(0);
+        face.setFaceName("admin");
+        face.setFaceStatus(0);
+        boolean save = save(face);
+        faceResult.setCode(FaceResult.INIT_FACE);
+        faceResult.setMsg("人脸初始化"+(save?"成功":"失败")+","+(save?"请验证登录":"请稍后再试"));
+        faceResult.setName(face.getFaceName());
+        return faceResult;
     }
 
 }
