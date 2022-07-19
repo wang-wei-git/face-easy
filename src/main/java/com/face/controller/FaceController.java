@@ -1,5 +1,9 @@
 package com.face.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.face.annotation.FaceLog;
 import com.face.bean.Face;
 import com.face.bean.result.FaceResult;
@@ -32,6 +36,28 @@ public class FaceController {
     @FaceLog
     public FaceResult faceVef(@RequestBody String imageBase){
         return faceService.vef(imageBase);
+    }
+
+    @GetMapping("/faceList")
+    @ApiOperation(value = "人脸列表",notes = "查询所有的人脸信息")
+    public FaceResult faceList(
+            @RequestParam Integer current,
+            @RequestParam Integer size,
+            @RequestParam(required = false) String faceName,
+            @RequestParam(required = false) String faceStatus
+    ){
+        IPage<Face> page = faceService.page(new Page(current, size), new QueryWrapper<Face>()
+                .like(StrUtil.isNotBlank(faceName),"face_name",faceName)
+                .like(StrUtil.isNotBlank(faceStatus),"face_status",faceStatus));
+        return FaceResult.success(page);
+    }
+
+
+    @GetMapping("/faceDelete/{fid}")
+    @ApiOperation(value = "删除人脸",notes = "根据id进行删除")
+    public FaceResult faceDelete(@PathVariable Integer fid){
+        faceService.removeById(fid);
+        return FaceResult.success("删除成功");
     }
 
 

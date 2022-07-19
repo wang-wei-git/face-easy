@@ -1,5 +1,6 @@
 package com.face.bean.result;
 
+import com.face.bean.Face;
 import io.swagger.models.auth.In;
 import lombok.Data;
 
@@ -31,6 +32,11 @@ public class FaceResult {
     private String token;
 
     /**
+     * 数据集
+     */
+    private Object data;
+
+    /**
      * 相似度
      */
     private Float score;
@@ -55,6 +61,11 @@ public class FaceResult {
         return this;
     }
 
+    public FaceResult setData(Object data) {
+        this.data = data;
+        return this;
+    }
+
     public FaceResult setMsg(String msg) {
         this.msg = msg;
         return this;
@@ -75,5 +86,15 @@ public class FaceResult {
 
     public static FaceResult error(int code){
         return new FaceResult().setCode(code);
+    }
+
+    public static FaceResult success(){
+        return new FaceResult().setCode(SUCCESS_CODE);
+    }
+    public static FaceResult success(Object data){
+        return new FaceResult().setCode(SUCCESS_CODE).setData(data);
+    }
+    public static FaceResult success(String msg){
+        return new FaceResult().setCode(SUCCESS_CODE).setMsg(msg);
     }
 }
