@@ -28,7 +28,7 @@ public class Face implements Serializable {
     private String faceBase;
 
     /**
-     * 插件时间
+     * 插入时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;

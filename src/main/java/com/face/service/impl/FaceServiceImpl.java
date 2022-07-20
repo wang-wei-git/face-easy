@@ -59,7 +59,10 @@ public class FaceServiceImpl extends ServiceImpl<FaceMapper, Face>
                             faceResult.setMsg(face.getFaceName()+",当前人脸被禁用");
                             faceResult.setName(face.getFaceName());
                             faceResult.setCode(FaceResult.FORBIDDEN_FACE);
-                            return faceResult;
+                            if (faceLength == 1){
+                                return faceResult;
+                            }
+                            faceLength --;
                         }
                     }else {
                         if (faceLength == 1){

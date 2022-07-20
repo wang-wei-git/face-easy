@@ -5,7 +5,7 @@ use faceDB;
 create table face(
 fid int primary key auto_increment COMMENT '主键',
 face_base longtext COMMENT '图片数据 base_64编码',
-create_time datetime COMMENT '插件时间',
+create_time datetime COMMENT '插入时间',
 vef_num int COMMENT '验证次数',
 face_name varchar(100) COMMENT '人脸名称',
 remark varchar(200) COMMENT '人脸备注',

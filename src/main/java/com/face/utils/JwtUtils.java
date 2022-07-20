@@ -20,8 +20,8 @@ public class JwtUtils {
 
     public static String genereteToken(Map<String,String> mapinfo){
         Calendar instance = Calendar.getInstance();
-        //有效期为3小时
-        instance.add(Calendar.MINUTE,60*3);
+        //有效期为24小时
+        instance.add(Calendar.MINUTE,60*24);
         //map用户存储claim——声明的信息
         Map<String,Object> map=new HashMap<>();
         //生成token

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +59,28 @@ public class FaceController {
     public FaceResult faceDelete(@PathVariable Integer fid){
         faceService.removeById(fid);
         return FaceResult.success("删除成功");
+    }
+
+    @GetMapping("/info/{fid}")
+    @ApiOperation(value = "查询方法",notes = "根据id查询人脸信息")
+    public FaceResult info(@PathVariable Integer fid){
+        return FaceResult.success(faceService.getById(fid));
+    }
+
+    @PostMapping("/save")
+    @ApiOperation(value = "添加")
+    public FaceResult save(@RequestBody Face face){
+        face.setVefNum(0);
+        face.setCreateTime(new Date());
+        faceService.save(face);
+        return FaceResult.success("添加成功");
+    }
+
+    @PostMapping("/update")
+    @ApiOperation(value = "修改")
+    public FaceResult update(@RequestBody Face face){
+        faceService.updateById(face);
+        return FaceResult.success("修改成功");
     }
 
 
