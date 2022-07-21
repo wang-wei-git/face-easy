@@ -35,4 +35,4 @@ npm run serve 运行服务
 
 ### 怎么配置腾讯云？
 
-详细文档：
+详细文档：https://blog.csdn.net/Susan003/article/details/125914027?spm=1001.2014.3001.5502
