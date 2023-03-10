@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://gitee.com/susantyp/face-easy">
+  <a href="https://github.com/wwedutop/face-easy">
     <img src="https://img-blog.csdnimg.cn/5776aada5ab946b384c92e8adb69892d.png#pic_center?x-oss-process=" width="81" alt="FACE-UI">
   </a>
 </p>
