@@ -11,7 +11,7 @@ FACE-UI 基于前后端分离Web端项目，主要实现了网页版的人脸登
 
 #### 1，face-easy (后端springboot工程)
 
-项目地址：[susantyp/face-easy (gitee.com)](https://gitee.com/susantyp/face-easy)
+项目地址：https://github.com/wwedutop/face-easy
 
 拉取相关代码
 
@@ -23,7 +23,7 @@ FACE-UI 基于前后端分离Web端项目，主要实现了网页版的人脸登
 
 #### 2，face-ui(前端VUE 2.X 工程)
 
-项目地址：[susantyp/face-ui (gitee.com)](https://gitee.com/susantyp/face-ui)
+项目地址：https://github.com/wwedutop/face-ui
 
 拉取相关代码
 
